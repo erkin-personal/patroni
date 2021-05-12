@@ -1,0 +1,35 @@
+
+* Build from Repository
+
+
+First of all, git clone https://github.com/zalando/patroni.git
+
+Afterwards, make the necessary changes in the files.
+
+Then build the image Patroni image:
+
+
+docker build -t patroni:latest .
+
+
+* Setting up the Stack
+
+
+docker stack deploy -c docker-compose.yml patroni
+
+
+Wait for a few mins:
+
+Then check for services:
+
+
+docker service ls (on manager node)
+docker ps (on worker nodes)
+
+Since this is a docker swarm stack, you will notice that services will run and docker containers will be placed in the 3 nodes of docker swarm.
+
+
+This is 
+
+Have fun !
+

@@ -28,12 +28,7 @@ In that file (on each machine), you’ll add something like this to the bottom o
 192.168.1.67 docker-master
 192.168.1.107 docker-node1
 192.168.1.117 docker-node2
-1
-2
-3
-192.168.1.67 docker-master
-192.168.1.107 docker-node1
-192.168.1.117 docker-node2
+
 Make sure to edit the above to match your IP addresses and hostnames.
 
 Save and close the file.

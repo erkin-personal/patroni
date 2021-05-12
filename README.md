@@ -1,4 +1,5 @@
 # Patroni on Docker Swarm - with GlusterFS Integration
+
 Postgresql HA Cluster Setup
 
 
@@ -66,7 +67,10 @@ Copy that command and paste it into the terminal window of the nodes to join the
 
 And that’s all there is to deploying the swarm.
 
-Installing GlusterFS
+
+
+*  Installing GlusterFS
+
 You now need to install GlusterFS on each server within the swarm. First, install the necessary dependencies with the command:
 
 sudo apt-get install software-properties-common -y
@@ -86,7 +90,6 @@ sudo apt install glusterfs-server -y
 Finally, start and enable GlusterFS with the commands:
 
 sudo systemctl start glusterd
-
 
 sudo systemctl enable glusterd
 
@@ -112,11 +115,6 @@ Once the command completes, you can check to make sure your nodes are connected 
 
 gluster pool list
 
-You should see all nodes listed as connected (Figure 1).
-
-
-Figure 1: Our nodes are connected.
-
 Exit out of the root user with the exit command.
 
 Create the Gluster Volume
@@ -138,11 +136,11 @@ The volume is now up and running, but we need to make sure the volume will mount
 
 sudo -s
 
-echo 'localhost:/staging-gfs /mnt glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
+echo 'localhost:/staging-gfs /patroni glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0' >> /etc/fstab
 
-mount.glusterfs localhost:/staging-gfs /mnt
+mount.glusterfs localhost:/staging-gfs /patroni
 
-chown -R root:docker /mnt
+chown -R root:docker /patroni
 
 exit
 
@@ -150,26 +148,10 @@ To make sure the Gluster volume is mounted, issue the command:
 
 df -h
 
-You should see it listed at the bottom (Figure 2).
-
-
-Figure 2: Our Gluster volume is mounted properly.
 
 You can now create new files in the /mnt directory and they’ll show up in the /gluster/volume1 directories on every machine.
 
 Using Your New Gluster Volume with Docker
-At this point, you are ready to integrate your persistent storage volume with docker. Say, for instance, you need persistent storage for a MySQL database. In your docker YAML files, you could add a section like so:
+At this point, you are ready to integrate your persistent storage volume with docker. 
 
-<i> volumes:
-</i><i>   - type: bind
-</i><i>     source: /mnt/staging_mysql
-</i><i>     target: /opt/mysql/data</i>
-1
-2
-3
-4
-<i> volumes:
-</i><i>   - type: bind
-</i><i>     source: /mnt/staging_mysql
-</i><i>     target: /opt/mysql/data</i>
-Since we’ve mounted our persistent storage in /mnt everything saved there on one docker node will sync with all other nodes.
+Since we’ve mounted our persistent storage in /patroni everything saved there on one docker node will sync with all other nodes.

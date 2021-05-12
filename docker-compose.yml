@@ -53,7 +53,7 @@ services:
             <<: *haproxy_env
             PATRONI_NAME: patroni1
         volumes:
-         - /home/patroni/data1:/home/postgres/data
+         - /patroni/data1:/home/postgres/data
 
     patroni2:
         image: patroni:latest
@@ -65,7 +65,7 @@ services:
             <<: *haproxy_env
             PATRONI_NAME: patroni2
         volumes:
-         - /home/patroni/data2:/home/postgres/data
+         - /patroni/data2:/home/postgres/data
     patroni3:
         image: patroni:latest
         networks: [ demo ]
@@ -76,4 +76,4 @@ services:
             <<: *haproxy_env
             PATRONI_NAME: patroni3
         volumes:
-          - /home/patroni/data3:/home/postgres/data
+          - /patroni/data3:/home/postgres/data
